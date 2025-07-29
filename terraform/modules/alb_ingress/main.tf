@@ -1,20 +1,28 @@
 module "alb" {
   source  = "terraform-aws-modules/alb/aws"
-  version = "8.5.0"
+  version = "~> 8.0"
 
   name               = "nodejs-alb"
   load_balancer_type = "application"
   vpc_id             = var.vpc_id
   subnets            = var.public_subnets
+  security_groups    = [aws_security_group.alb.id]
 
-  security_groups = [aws_security_group.alb.id]
+  # HTTP listener on port 80
+  http_tcp_listeners = [
+    {
+      port               = 80
+      protocol           = "HTTP"
+      target_group_index = 0
+    }
+  ]
 
   # Target group for Node.js app
   target_groups = [
     {
       name_prefix      = "nodejs-"
       backend_protocol = "HTTP"
-      backend_port     = 30080  # NodePort in EKS
+      backend_port     = 30080 # NodePort in EKS
       target_type      = "instance"
       health_check = {
         path                = "/users"
@@ -24,17 +32,6 @@ module "alb" {
         timeout             = 5
         healthy_threshold   = 5
         unhealthy_threshold = 2
-      }
-    }
-  ]
-
-  listeners = [
-    {
-      port     = 80
-      protocol = "HTTP"
-      default_action = {
-        type             = "forward"
-        target_group_arn = element(module.alb.target_group_arns, 0)
       }
     }
   ]
@@ -58,12 +55,4 @@ resource "aws_security_group" "alb" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-}
-
-# Attach EKS nodes to Target Group
-resource "aws_lb_target_group_attachment" "eks_nodes" {
-  count            = length(var.eks_node_private_ips)
-  target_group_arn = element(module.alb.target_group_arns, 0)
-  target_id        = var.eks_node_private_ips[count.index]
-  port             = 30080
 }
