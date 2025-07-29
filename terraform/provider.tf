@@ -8,9 +8,9 @@ terraform {
   }
 
   backend "s3" {
-    bucket         = "your-terraform-state-bucket"
+    bucket         = "terraform-state-bucket"
     key            = "addx-take-home/terraform.tfstate"
-    region         = "ap-southeast-1"
+    region         = "us-east-1"
     dynamodb_table = "lock-table"
     encrypt        = true
   }
