@@ -20,7 +20,16 @@ module "rds" {
   db_password = var.db_password
 }
 
+data "aws_instances" "eks_nodes" {
+  filter {
+    name   = "tag:eks:cluster-name"
+    values = [module.eks.cluster_name]
+  }
+}
+
 module "alb_ingress" {
-  source       = "./modules/alb_ingress"
-  cluster_name = module.eks.cluster_name
+  source             = "./modules/alb_ingress"
+  vpc_id             = module.vpc.vpc_id
+  public_subnets     = module.vpc.public_subnets
+  eks_node_private_ips = data.aws_instances.eks_nodes.private_ips
 }
