@@ -4,6 +4,7 @@ module "eks" {
   cluster_version = "1.29"
   subnets         = var.subnets
   vpc_id          = var.vpc_id
+  version = "19.17.2"
 
   enable_irsa = true
 
