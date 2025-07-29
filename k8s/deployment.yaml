@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejs-api
+  labels:
+    app: nodejs-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nodejs-api
+  template:
+    metadata:
+      labels:
+        app: nodejs-api
+    spec:
+      serviceAccountName: nodejs-sa
+      containers:
+        - name: nodejs-api
+          image: <AWS_ACCOUNT_ID>.dkr.ecr.ap-southeast-1.amazonaws.com/nodejs-api:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          env:
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: host
+            - name: DB_NAME
+              value: usersdb
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: password
