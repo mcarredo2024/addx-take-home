@@ -8,10 +8,10 @@ terraform {
   }
 
   backend "s3" {
-    bucket         = "terraform-state-bucket"
+    bucket         = "addx-terraform-state-bucket"
     key            = "addx-take-home/terraform.tfstate"
     region         = "us-east-1"
-    dynamodb_table = "lock-table"
+    dynamodb_table = "addx-lock-table"
     encrypt        = true
   }
 }
