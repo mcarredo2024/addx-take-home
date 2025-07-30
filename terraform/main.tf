@@ -1,10 +1,10 @@
 module "vpc" {
-  source = "./modules/vpc"
+  source  = "./modules/vpc"
 }
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "19.17.2"
+  version = "19.17.2" # ✅ Pin to stable version
 
   cluster_name    = "nodejs-eks"
   cluster_version = "1.29"
