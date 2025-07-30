@@ -10,7 +10,7 @@ The API uses **PostgreSQL on Amazon RDS** and is exposed via **AWS ALB Ingress**
 - **AWS VPC**: Public & Private Subnets, NAT Gateway
 - **EKS**: Private node group with IRSA enabled
 - **ECR**: Stores Docker images for Node.js API
-- **RDS (PostgreSQL)**: Private subnet database
+- **RDS (PostgreSQL)**: Private and Public subnet database ( for testing purposes )
 - **ALB Ingress**: Public access for API
 - **Node.js API**:
     - `/users` → List all users
