@@ -42,9 +42,6 @@ jobs:
       - name: Terraform Init
         run: terraform -chdir=terraform init -upgrade
 
-      - name: Check Installed EKS Module Version
-        run: grep -A1 "terraform-aws-modules/eks/aws" terraform/.terraform.lock.hcl || echo "Module not found!"
-
       - name: Terraform Plan
         run: terraform -chdir=terraform plan -out=tfplan
 
@@ -58,7 +55,7 @@ jobs:
 
       - name: Update kubeconfig
         if: ${{ github.event.inputs.action == 'apply' }}
-        run: aws eks update-kubeconfig --name nodejs-eks --region us-east-1
+        run: aws eks update-kubeconfig --name nodejs-eks --region ${{ env.AWS_REGION }}
 
       - name: Apply ALB Controller Service Account
         if: ${{ github.event.inputs.action == 'apply' }}
