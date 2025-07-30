@@ -78,6 +78,13 @@ Go to **Settings → Secrets and variables → Actions**, and add:
     - Applies Deployment, Service, Ingress
     - Retrieves **ALB DNS** from AWS
 
+```bash
+kubectl get ingress nodejs-api-ingress
+
+curl http://<ALB-DNS>/users
+curl http://<ALB-DNS>/users/1
+```
+
 ---
 
 ### **Step 3: Test API**
@@ -86,12 +93,7 @@ Go to **Settings → Secrets and variables → Actions**, and add:
 - http://k8s-default-nodejsap-c8e0b3a355-76710428.us-east-1.elb.amazonaws.com/users/1
 
 
-```bash
-kubectl get ingress nodejs-api-ingress
 
-curl http://<ALB-DNS>/users
-curl http://<ALB-DNS>/users/1
-```
 
 ### **AWS Screenshots**
 ![alt text][vpc] VPC with subnets
