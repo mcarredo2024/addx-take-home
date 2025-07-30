@@ -29,7 +29,7 @@ resource "aws_db_instance" "postgres" {
   engine_version         = "14.10"
   instance_class         = "db.t3.micro"
   allocated_storage      = 20
-  name                   = "usersdb"
+  db_name                = "addx"
   username               = var.db_user
   password               = var.db_password
   skip_final_snapshot    = true

@@ -1,6 +1,7 @@
 data "aws_iam_openid_connect_provider" "eks" {
-  arn = module.eks.oidc_provider_arn
+  arn = var.oidc_provider_arn
 }
+
 
 resource "aws_iam_role" "alb_controller_role" {
   name = "AmazonEKSLoadBalancerControllerRole"

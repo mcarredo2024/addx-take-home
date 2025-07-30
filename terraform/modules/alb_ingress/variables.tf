@@ -7,3 +7,6 @@ variable "aws_region" {
 variable "vpc_id" {
   type = string
 }
+variable "oidc_provider_arn" {
+  type = string
+}
