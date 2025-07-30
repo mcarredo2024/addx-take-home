@@ -1,7 +1,11 @@
 resource "aws_db_subnet_group" "db_subnet" {
   name       = "rds-subnet-group"
-  subnet_ids = var.subnets
+  subnet_ids = concat(var.private_subnets, var.public_subnets)  # ✅ FIX
+  tags = {
+    Name = "rds-subnet-group"
+  }
 }
+
 
 resource "aws_security_group" "db" {
   name   = "rds-db-sg"
