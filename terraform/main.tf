@@ -22,7 +22,7 @@ module "eks" {
   version = "~> 21.0"
 
   name                               = "nodejs-eks"
-  kubernetes_version                 = "1.29"
+  kubernetes_version                 = "1.31"
   enable_irsa                        = true
   enable_cluster_creator_admin_permissions = true
   endpoint_public_access             = true

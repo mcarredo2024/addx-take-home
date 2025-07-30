@@ -28,6 +28,7 @@ resource "aws_iam_role" "alb_controller_role" {
 resource "aws_iam_role_policy_attachment" "alb_controller_policy" {
   role       = aws_iam_role.alb_controller_role.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSLoadBalancerControllerPolicy"
+  depends_on = [aws_iam_policy.alb_controller_policy]
 }
 
 
