@@ -82,6 +82,9 @@ Go to **Settings → Secrets and variables → Actions**, and add:
 
 ### **Step 3: Test API**
 ALB DNS: k8s-default-nodejsap-c8e0b3a355-76710428.us-east-1.elb.amazonaws.com
+http://k8s-default-nodejsap-c8e0b3a355-76710428.us-east-1.elb.amazonaws.com/users
+http://k8s-default-nodejsap-c8e0b3a355-76710428.us-east-1.elb.amazonaws.com/users/1
+
 
 ```bash
 kubectl get ingress nodejs-api-ingress
@@ -91,13 +94,11 @@ curl http://<ALB-DNS>/users/1
 ```
 
 ### **AWS Screenshots**
-![alt text][alb] VPC with subnets
-![alt text][ecr] RDS instance details
-![alt text][eks] ECR repository with image
-![alt text][rds] EKS cluster in AWS
-![alt text][vpc] ALB target group showing healthy
-  http://k8s-default-nodejsap-c8e0b3a355-76710428.us-east-1.elb.amazonaws.com/users
-  http://k8s-default-nodejsap-c8e0b3a355-76710428.us-east-1.elb.amazonaws.com/users/1
+![alt text][vpc] VPC with subnets
+![alt text][rds] RDS instance details
+![alt text][ecr] ECR repository with image
+![alt text][eks] EKS cluster in AWS
+![alt text][alb] ALB target group showing healthy
 
 [alb]: https://github.com/mcarredo2024/addx-take-home/blob/main/images/alb-tg.png
 [ecr]: https://github.com/mcarredo2024/addx-take-home/blob/main/images/ecr.png
