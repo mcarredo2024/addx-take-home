@@ -1,58 +1,51 @@
-module "alb" {
-  source  = "terraform-aws-modules/alb/aws"
-  version = "~> 8.0"
-
-  name               = "nodejs-alb"
-  load_balancer_type = "application"
-  vpc_id             = var.vpc_id
-  subnets            = var.public_subnets
-  security_groups    = [aws_security_group.alb.id]
-
-  # HTTP listener on port 80
-  http_tcp_listeners = [
-    {
-      port               = 80
-      protocol           = "HTTP"
-      target_group_index = 0
-    }
-  ]
-
-  # Target group for Node.js app
-  target_groups = [
-    {
-      name_prefix      = "nodejs-"
-      backend_protocol = "HTTP"
-      backend_port     = 30080 # NodePort in EKS
-      target_type      = "instance"
-      health_check = {
-        path                = "/users"
-        protocol            = "HTTP"
-        matcher             = "200"
-        interval            = 30
-        timeout             = 5
-        healthy_threshold   = 5
-        unhealthy_threshold = 2
-      }
-    }
-  ]
+provider "helm" {
+  kubernetes {
+    config_path = "~/.kube/config"
+  }
 }
 
-resource "aws_security_group" "alb" {
-  name        = "alb-sg"
-  description = "Allow HTTP access"
-  vpc_id      = var.vpc_id
+# Create IAM Role for ALB Controller
+resource "aws_iam_role" "alb_controller_role" {
+  name = "AmazonEKSLoadBalancerControllerRole"
 
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Federated = aws_iam_openid_connect_provider.eks.arn
+        }
+        Action = "sts:AssumeRoleWithWebIdentity"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "alb_controller_policy" {
+  role       = aws_iam_role.alb_controller_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSLoadBalancerControllerPolicy"
+}
+
+# Deploy ALB Controller using Helm
+resource "helm_release" "alb_controller" {
+  name       = "aws-load-balancer-controller"
+  repository = "https://aws.github.io/eks-charts"
+  chart      = "aws-load-balancer-controller"
+  namespace  = "kube-system"
+
+  set {
+    name  = "clusterName"
+    value = var.cluster_name
   }
 
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+  set {
+    name  = "serviceAccount.create"
+    value = "false"
+  }
+
+  set {
+    name  = "serviceAccount.name"
+    value = "aws-load-balancer-controller"
   }
 }
