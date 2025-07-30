@@ -4,7 +4,8 @@ module "vpc" {
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "19.17.2"  # ✅ MUST BE PRESENT
+  version = "19.17.2"
+
   cluster_name    = "nodejs-eks"
   cluster_version = "1.29"
   vpc_id          = module.vpc.vpc_id
