@@ -1,6 +1,6 @@
 resource "aws_db_subnet_group" "db_subnet" {
   name       = "rds-subnet-group"
-  subnet_ids = concat(var.private_subnets, var.public_subnets)  # ✅ FIX
+  subnet_ids = concat(var.private_subnets, var.public_subnets)
   tags = {
     Name = "rds-subnet-group"
   }
@@ -39,14 +39,15 @@ resource "aws_db_instance" "postgres" {
   identifier             = "nodejs-postgres"
   engine                 = "postgres"
   engine_version         = "15.7"
-  instance_class         = "db.t3.micro"
+  instance_class         = "db.t4g.micro"
   allocated_storage      = 20
   db_name                = "addx"
   username               = var.db_user
   password               = var.db_password
-  skip_final_snapshot    = true
+  skip_final_snapshot    = false
   db_subnet_group_name   = aws_db_subnet_group.db_subnet.name
   vpc_security_group_ids = [aws_security_group.db.id]
   publicly_accessible    = true
+  apply_immediately      = true
 }
 
