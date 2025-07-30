@@ -1,9 +1,3 @@
-provider "helm" {
-  kubernetes {
-    config_path = "~/.kube/config"
-  }
-}
-
 data "aws_iam_openid_connect_provider" "eks" {
   arn = module.eks.oidc_provider_arn
 }

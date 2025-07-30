@@ -7,7 +7,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
-      AWS_REGION: ap-southeast-1
+      AWS_REGION: us-east-1
 
     steps:
       - name: Checkout Repository
