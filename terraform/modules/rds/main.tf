@@ -19,6 +19,14 @@ resource "aws_security_group" "db" {
     cidr_blocks = ["10.0.0.0/16"]
   }
 
+  ingress {
+    description = "Postgres from Marvin Home"
+    from_port   = 5432
+    to_port     = 5432
+    protocol    = "tcp"
+    cidr_blocks = ["39.109.170.239/32"]
+  }
+
   egress {
     from_port   = 0
     to_port     = 0
@@ -39,6 +47,6 @@ resource "aws_db_instance" "postgres" {
   skip_final_snapshot    = true
   db_subnet_group_name   = aws_db_subnet_group.db_subnet.name
   vpc_security_group_ids = [aws_security_group.db.id]
-  publicly_accessible    = false
+  publicly_accessible    = true
 }
 
