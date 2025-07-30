@@ -18,38 +18,6 @@ The API uses **PostgreSQL on Amazon RDS** and is exposed via **AWS ALB Ingress**
 
 ---
 
-## ✅ **Repository Structure**
-addx-take-home/
-├── README.md
-├── terraform/
-│ ├── main.tf
-│ ├── variables.tf
-│ ├── outputs.tf
-│ ├── provider.tf
-│ └── modules/
-│ ├── vpc/
-│ ├── eks/
-│ ├── rds/
-│ ├── ecr/
-│ └── alb_ingress/
-├── nodejs-app/
-│ ├── Dockerfile
-│ ├── package.json
-│ ├── server.js
-│ └── .env.example
-├── k8s/
-│ ├── deployment.yaml
-│ ├── service.yaml
-│ ├── ingress.yaml
-│ ├── serviceaccount.yaml
-│ └── secret.yaml
-└── .github/workflows/
-├── terraform.yml
-├── build-node.yml
-└── k8s-deploy.yml
-
----
-
 ## ✅ **GitHub Actions Workflows**
 We split CI/CD into **three separate workflows** for clarity and control:
 
