@@ -81,9 +81,9 @@ Go to **Settings → Secrets and variables → Actions**, and add:
 ---
 
 ### **Step 3: Test API**
-ALB DNS: k8s-default-nodejsap-c8e0b3a355-76710428.us-east-1.elb.amazonaws.com
-http://k8s-default-nodejsap-c8e0b3a355-76710428.us-east-1.elb.amazonaws.com/users
-http://k8s-default-nodejsap-c8e0b3a355-76710428.us-east-1.elb.amazonaws.com/users/1
+- ALB DNS: k8s-default-nodejsap-c8e0b3a355-76710428.us-east-1.elb.amazonaws.com
+- http://k8s-default-nodejsap-c8e0b3a355-76710428.us-east-1.elb.amazonaws.com/users
+- http://k8s-default-nodejsap-c8e0b3a355-76710428.us-east-1.elb.amazonaws.com/users/1
 
 
 ```bash
