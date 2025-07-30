@@ -26,7 +26,7 @@ resource "aws_security_group" "db" {
 resource "aws_db_instance" "postgres" {
   identifier             = "nodejs-postgres"
   engine                 = "postgres"
-  engine_version         = "14.10"
+  engine_version         = "14.9"
   instance_class         = "db.t3.micro"
   allocated_storage      = 20
   db_name                = "addx"
