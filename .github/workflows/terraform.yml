@@ -56,3 +56,5 @@ jobs:
       - name: Apply ALB Controller SA
         run: kubectl apply -f k8s/alb-controller-sa.yaml
 
+      - name: Check Installed Modules
+        run: cat terraform/.terraform.lock.hcl | grep -A1 "eks/aws"
