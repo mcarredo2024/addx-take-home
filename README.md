@@ -91,11 +91,17 @@ curl http://<ALB-DNS>/users/1
 ```
 
 ### **AWS Screenshots**
-- [Screenshot] VPC with subnets
-- [Screenshot] EKS cluster in AWS
-- [Screenshot] Node groups
-- [Screenshot] RDS instance details
-- [Screenshot] ECR repository with image
-- [Screenshot] ALB target group showing healthy
+![alt text][alb] VPC with subnets
+![alt text][ecr] RDS instance details
+![alt text][eks] ECR repository with image
+![alt text][rds] EKS cluster in AWS
+![alt text][vpc] ALB target group showing healthy
   http://k8s-default-nodejsap-c8e0b3a355-76710428.us-east-1.elb.amazonaws.com/users
   http://k8s-default-nodejsap-c8e0b3a355-76710428.us-east-1.elb.amazonaws.com/users/1
+
+[alb]: https://github.com/mcarredo2024/addx-take-home/blob/main/images/alb-tg.png
+[ecr]: https://github.com/mcarredo2024/addx-take-home/blob/main/images/ecr.png
+[eks]: https://github.com/mcarredo2024/addx-take-home/blob/main/images/eks.png
+[rds]: https://github.com/mcarredo2024/addx-take-home/blob/main/images/rds.png
+[vpc]: https://github.com/mcarredo2024/addx-take-home/blob/main/images/vpc-subnet.png
+
