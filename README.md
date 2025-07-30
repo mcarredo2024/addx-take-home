@@ -89,7 +89,7 @@ Purpose:
 
 ---
 
-## ✅ **How to Use**
+## **How to Use**
 ### **Step 1: Configure GitHub Secrets**
 Go to **Settings → Secrets and variables → Actions**, and add:
 - `AWS_ACCESS_KEY_ID`
@@ -113,9 +113,21 @@ Go to **Settings → Secrets and variables → Actions**, and add:
 ---
 
 ### **Step 3: Test API**
-Get ALB DNS:
+ALB DNS: k8s-default-nodejsap-c8e0b3a355-76710428.us-east-1.elb.amazonaws.com
+
 ```bash
 kubectl get ingress nodejs-api-ingress
 
 curl http://<ALB-DNS>/users
 curl http://<ALB-DNS>/users/1
+```
+
+### **AWS Screenshots**
+- [Screenshot] VPC with subnets
+- [Screenshot] EKS cluster in AWS
+- [Screenshot] Node groups
+- [Screenshot] RDS instance details
+- [Screenshot] ECR repository with image
+- [Screenshot] ALB target group showing healthy
+  http://k8s-default-nodejsap-c8e0b3a355-76710428.us-east-1.elb.amazonaws.com/users
+  http://k8s-default-nodejsap-c8e0b3a355-76710428.us-east-1.elb.amazonaws.com/users/1

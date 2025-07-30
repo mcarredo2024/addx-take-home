@@ -5,7 +5,6 @@ require('dotenv').config();
 const app = express();
 const port = 3000;
 
-// PostgreSQL connection pool
 const pool = new Pool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
@@ -15,7 +14,6 @@ const pool = new Pool({
   ssl: { rejectUnauthorized: false }
 });
 
-// API: List all users
 app.get('/users', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM users');
@@ -26,7 +24,6 @@ app.get('/users', async (req, res) => {
   }
 });
 
-// API: Get user by ID
 app.get('/users/:id', async (req, res) => {
   try {
     const { id } = req.params;

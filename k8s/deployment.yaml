@@ -17,7 +17,7 @@ spec:
       serviceAccountName: nodejs-sa
       containers:
         - name: nodejs-api
-          image: 053333048121.dkr.ecr.ap-southeast-1.amazonaws.com/nodejs-api:latest
+          image: 053333048121.dkr.ecr.us-east-1.amazonaws.com/nodejs-api:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
@@ -28,7 +28,7 @@ spec:
                   name: db-secret
                   key: host
             - name: DB_NAME
-              value: usersdb
+              value: addx
             - name: DB_USER
               valueFrom:
                 secretKeyRef:

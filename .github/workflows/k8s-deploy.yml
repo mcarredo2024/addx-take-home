@@ -40,6 +40,8 @@ jobs:
           kubectl apply -f k8s/deployment.yaml
           kubectl apply -f k8s/service.yaml
           kubectl apply -f k8s/ingress.yaml
+          kubectl apply -f k8s/alb-controller-sa.yaml
+          kubectl apply -f k8s/serviceaccount.yaml
 
       - name: Get ALB DNS
         run: |
