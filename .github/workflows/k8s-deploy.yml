@@ -1,11 +1,14 @@
-name: Deploy Kubernetes Changes
+name: Deploy App to EKS
 
 on:
   workflow_dispatch:
 
 jobs:
-  deploy_k8s:
+  deploy:
     runs-on: ubuntu-latest
+    env:
+      AWS_REGION: ap-southeast-1
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -15,30 +18,30 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-southeast-1
+          aws-region: ${{ env.AWS_REGION }}
 
-      - name: Setup kubectl
-        uses: azure/setup-kubectl@v3
-        with:
-          version: latest
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build and Push Image
+        run: |
+          IMAGE_TAG=latest
+          ECR_REGISTRY=${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY=nodejs-api
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./nodejs-app
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
       - name: Update kubeconfig
-        run: aws eks update-kubeconfig --name nodejs-eks --region ap-southeast-1
+        run: aws eks update-kubeconfig --name nodejs-eks --region ${{ env.AWS_REGION }}
 
-      - name: Create DB Secret
+      - name: Deploy App
         run: |
-          kubectl delete secret db-secret --ignore-not-found
-          kubectl create secret generic db-secret \
-            --from-literal=host=$(aws rds describe-db-instances --db-instance-identifier nodejs-postgres --query "DBInstances[0].Endpoint.Address" --output text) \
-            --from-literal=username=${{ secrets.DB_USER }} \
-            --from-literal=password=${{ secrets.DB_PASSWORD }}
-
-      - name: Apply Kubernetes Manifests
-        run: |
-          kubectl apply -f k8s/serviceaccount.yaml
           kubectl apply -f k8s/deployment.yaml
           kubectl apply -f k8s/service.yaml
           kubectl apply -f k8s/ingress.yaml
 
-      - name: Print ALB DNS
-        run: echo "ALB DNS: $(kubectl get ingress nodejs-api-ingress -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')"
+      - name: Get ALB DNS
+        run: |
+          echo "ALB DNS:"
+          kubectl get ingress nodejs-api-ingress -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'
