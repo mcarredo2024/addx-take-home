@@ -50,8 +50,9 @@ jobs:
         if: ${{ github.event.inputs.action == 'destroy' }}
         run: terraform -chdir=terraform destroy -auto-approve
 
-      - name: update-kubeconfig
+      - name: Update kubeconfig
         run: aws eks update-kubeconfig --name nodejs-eks --region us-east-1
 
-      - name: eks apply
+      - name: Apply ALB Controller SA
         run: kubectl apply -f k8s/alb-controller-sa.yaml
+

@@ -4,7 +4,10 @@ provider "helm" {
   }
 }
 
-# Create IAM Role for ALB Controller
+data "aws_iam_openid_connect_provider" "eks" {
+  arn = module.eks.oidc_provider_arn
+}
+
 resource "aws_iam_role" "alb_controller_role" {
   name = "AmazonEKSLoadBalancerControllerRole"
 
@@ -14,9 +17,14 @@ resource "aws_iam_role" "alb_controller_role" {
       {
         Effect = "Allow"
         Principal = {
-          Federated = aws_iam_openid_connect_provider.eks.arn
+          Federated = data.aws_iam_openid_connect_provider.eks.arn
         }
         Action = "sts:AssumeRoleWithWebIdentity"
+        Condition = {
+          StringEquals = {
+            "${replace(data.aws_iam_openid_connect_provider.eks.url, "https://", "")}:sub" = "system:serviceaccount:kube-system:aws-load-balancer-controller"
+          }
+        }
       }
     ]
   })
@@ -27,7 +35,6 @@ resource "aws_iam_role_policy_attachment" "alb_controller_policy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSLoadBalancerControllerPolicy"
 }
 
-# Deploy ALB Controller using Helm
 resource "helm_release" "alb_controller" {
   name       = "aws-load-balancer-controller"
   repository = "https://aws.github.io/eks-charts"
@@ -37,6 +44,16 @@ resource "helm_release" "alb_controller" {
   set {
     name  = "clusterName"
     value = var.cluster_name
+  }
+
+  set {
+    name  = "region"
+    value = var.aws_region
+  }
+
+  set {
+    name  = "vpcId"
+    value = var.vpc_id
   }
 
   set {
