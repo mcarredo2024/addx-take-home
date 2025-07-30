@@ -31,7 +31,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
-      # ✅ Clean Terraform cache to force correct module version
       - name: Clean Terraform Cache
         run: rm -rf terraform/.terraform terraform/.terraform.lock.hcl
 
