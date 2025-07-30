@@ -38,6 +38,3 @@ resource "aws_db_instance" "postgres" {
   publicly_accessible    = false
 }
 
-output "rds_endpoint" {
-  value = aws_db_instance.postgres.address
-}
