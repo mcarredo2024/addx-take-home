@@ -1,4 +1,9 @@
 variable "cluster_name" {
-  description = "EKS cluster name"
-  type        = string
+  type = string
+}
+variable "aws_region" {
+  type = string
+}
+variable "vpc_id" {
+  type = string
 }
